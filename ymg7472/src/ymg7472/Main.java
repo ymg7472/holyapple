@@ -1,5 +1,6 @@
 package ymg7472;
 import java.util.Scanner;
+import lombok.Data;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
