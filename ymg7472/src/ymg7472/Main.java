@@ -83,7 +83,7 @@ public class Main{
 			}
 			if(a==6) {
 				FileInputStream input = new FileInputStream("C:\\Users\\swh\\userslist.txt");
-		        byte[] data = new byte[1024];  // 파일 내용의 길이가 1024바이트보다 크면 좋지 못한 방법
+		        byte[] data = new byte[1024]; 
 		        input.read(data);
 		        System.out.println(new String(data));
 		        input.close();
