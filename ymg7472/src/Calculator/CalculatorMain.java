@@ -1,26 +1,8 @@
 package Calculator;
 import java.util.ArrayList;
-import java.util.Scanner;;
+import java.util.Scanner;
 public class CalculatorMain {
 	public static void main(String[] args) {
-//		public void match(String yunsanza, int realnum1, int realnum2, int finalnum) {
-//			if (yunsanza.equals("+")) {
-//				finalnum = finalnum + realnum2;
-//				System.out.println(finalnum);
-//			}
-//			else if (yunsanza.equals("-")) {
-//				finalnum = finalnum - realnum2;
-//				System.out.println(finalnum);
-//			}
-//			else if (yunsanza.equals("*")) {
-//				finalnum = finalnum * realnum2;
-//				System.out.println(finalnum);
-//			}
-//			else if (yunsanza.equals("/")) {
-//				finalnum = finalnum / realnum2;
-//				System.out.println(finalnum);
-//			}
-//		}
 		int realnum1 = 0;
 		int realnum2 = 0;
 		int finalnum = 0;
