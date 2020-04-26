@@ -14,6 +14,7 @@ import mask.model.Sales;
 
 public class SalesCrawl {
 	public void crawlSales() throws SQLException, ClassNotFoundException{
+		long beforeTime = System.currentTimeMillis();
 		Document doc= null;
 		int page = 0;
 		String page1 = "";
@@ -50,6 +51,9 @@ public class SalesCrawl {
 		}
 		sessionFactory.close();
 		System.out.println("트랜잭션 정상처리");
+		long afterTime = System.currentTimeMillis();
+		long secDiffTime = (afterTime - beforeTime)/1000;
+		System.out.println("소요시간(초) : "+secDiffTime);
 		
 	
 	}

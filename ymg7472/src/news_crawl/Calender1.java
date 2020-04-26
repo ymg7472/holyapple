@@ -127,127 +127,15 @@ class Calender1 {
 
 
 	public static void main(String[] args) throws IOException {
-		PrintStream s = System.out;
-		String num1="100";
-		String num2="269";
-		int how = 0;
+		DatabaseUtil db = new DatabaseUtil("jdbc:mysql://dev-swh.ga/minkyu", "root", "swhacademy!");
 		Scanner sc = new Scanner(System.in);
-		s.println("원하는 날짜?");
+		System.out.println("원하는 날짜?");
 		String wantDate = sc.nextLine();
-		s.println("정치, 경제, 사회, 문화 중 택일");
+		System.out.println("정치, 경제, 사회, 문화 중 택일");
 		String wantSub = sc.nextLine();
-		HttpClient client = HttpClients.createDefault();
-		HttpPost request = new HttpPost("http://localhost:4567/users");
-		if(wantSub.equals("정치")) {
-			num1="100";
-			num2="269";
-		}else if(wantSub.equals("경제")){
-			num1="101";
-			num2="263";
-		}else if(wantSub.equals("사회")) {
-			num1="102";
-			num2="257";
-		}else {
-			num1="102";
-			num2="257";
-
-		}
-		sc.close();
-		ArrayList<String> links = new ArrayList<String>();
-		ArrayList<String> id = new ArrayList<String>();
-		ArrayList<C_news> news1 = new ArrayList<C_news>();
-		int holy = 1;
-		while(true) {
-			String articleURL = "https://news.naver.com/main/list.nhn?mode=LS2D&sid2="+ num2 +"&sid1="+ num1 +"&mid=shm&date="+ wantDate +"&page="+ holy;
-			Document doc= null;
-			try {
-				doc = Jsoup.connect(articleURL).timeout(0).get();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			Elements ele = doc.getElementsByClass("list_body newsflash_body");
-			Elements news = ele.select("a");
-			//		s.println(news.eachAttr("href"));
-			ArrayList<String> readylinks = (ArrayList<String>) news.eachAttr("href");
-			ArrayList<String> r1 = new ArrayList<String>();
-			if (links.contains(readylinks.get(1))) {
-
-				break;	
-			}else {
-				for(int i = 0; i < readylinks.size(); i++) {
-					if(!r1.contains(readylinks.get(i))) {
-						r1.add(readylinks.get(i));
-					}
-				}
-				for(int i = 0; i < r1.size(); i++) {
-					links.add(r1.get(i));
-				}
-			}
-
-
-			for(int i = 0; i < r1.size(); i++) {
-				String g = r1.get(i);
-				id.add(g.substring(g.length()-10, g.length()));
-			}
-
-			for(int i = 0; i < r1.size(); i++) {
-				String sub = wantSub;
-				C_news n = new C_news();
-				n.setSubject(sub);
-				String idVal = "";
-				Pattern pattern = Pattern.compile("(?<=(&oid=|\\?oid=)|(&aid=|\\?aid=))[\\d]+");
-				String articleURL1 = r1.get(i);
-				Matcher m = pattern.matcher(articleURL1);
-				while(m.find()) {
-					//group() 메소드를 호출하고 정규 표현에 일치된 문자열을 꺼냄
-					idVal = idVal + m.group() +"-";
-
-				}
-				//				String aid = articleURL1.substring(articleURL1.length()-10, articleURL1.length()); 
-				//				String oid = articleURL1.substring(articleURL1.length()-18, articleURL1.length()-15);
-				n.setId(idVal.substring(0,idVal.length()-1));
-				//				System.out.println(n.getId());
-				//				n.setId(oid+"-"+aid);
-				Document doc1=null;
-				try {
-					doc1 = Jsoup.connect(articleURL1).timeout(0).get();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				Elements t1 = doc1.select("title");
-				String tit = t1.text().toString();
-				n.setTitle(tit);
-				t1 = doc1.getElementsByClass("_article_body_contents");
-				n.setContents(t1.text());
-				t1 = doc1.getElementsByClass("t11");
-				n.setDate(wantDate);
-
-				String json = new Gson().toJson(n);
-				HttpEntity entity = new StringEntity(json, "UTF-8");
-				request.setEntity(entity);
-				HttpResponse response = client.execute(request);
-				String result = EntityUtils.toString(response.getEntity());
-				System.out.println(result);
-					//			            //  응답
-					//			            String result = EntityUtils.toString(response.getEntity());
-					//			            System.out.println(result);
-			}
-			//s.println(json);
-			client = HttpClients.createDefault();
-			readylinks.clear();
-			r1.clear();
-			s.println(holy);
-			holy++;
-			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		db.crawlNews(wantSub, wantDate);
 	}
+		
 	//		SlackApi api = new SlackApi("https://hooks.slack.com/services/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");
 	//		SlackAttachment attach = new SlackAttachment();
 	//		attach.setTimestamp(new java.util.Date());
