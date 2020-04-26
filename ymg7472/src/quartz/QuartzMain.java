@@ -1,5 +1,7 @@
 package quartz;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import org.quartz.CronScheduleBuilder;
@@ -85,16 +87,17 @@ public class QuartzMain {
 //		0 0 0 * * ?            매일 0시 마다
 //		0 0 0 1 * ?            매월 1일 마다
 //		0 0 0 1,10,20 * ?    매월 1일, 10일, 20일 마다
-		
-		if(quartz.initialise("0/1 * * * * ?", SchedulerProcessor.class)){
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH");
+		LocalDateTime now = LocalDateTime.now();
+		if(quartz.initialise("0/10 * * * * ?", SchedulerProcessor.class)){
 			quartz.start();
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			quartz.stop();
+//			try {
+//				Thread.sleep(10000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			quartz.stop();
 		}
 	}
 }

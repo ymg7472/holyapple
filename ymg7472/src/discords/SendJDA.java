@@ -15,11 +15,12 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 
-import discord_sentimental.TListener1;
+
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
 
 public class SendJDA {
 
@@ -29,13 +30,14 @@ public class SendJDA {
 		List<SentimentalDic> dicList = initDatas();
 		JDABuilder jb = new JDABuilder(AccountType.BOT);
 		jb.setAutoReconnect(true);
-		jb.setStatus(OnlineStatus.DO_NOT_DISTURB);
-		jb.setToken("NjU4Mjc0Mjk4MDg3MzQyMDkx.Xf9Yag.O31K5Q6AGY58mEd805O5NjV_0sU");
+		jb.setToken("NjU4Mjc0Mjk4MDg3MzQyMDkx.Xiqx5A.eerQaSWs3MA_MdBKz0rRgU1ZNhI");
 		jb.addEventListeners(new TListener(dicList));
-		
+		jb.setStatus(OnlineStatus.ONLINE);
+		String ss = "Ss";
 		try {
 			jda = jb.build();
-		} catch (LoginException e) {
+			jda.getPresence().setActivity(Activity.listening("!¸í·É¾î"));
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

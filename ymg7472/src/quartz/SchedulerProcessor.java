@@ -1,7 +1,12 @@
 package quartz;
 
+import java.sql.SQLException;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import mask.SalesCrawl;
+import mask.StoreCrawl;
 
 
 /**
@@ -17,17 +22,26 @@ import org.quartz.JobExecutionException;
  * @version : v1.0
  */
 public class SchedulerProcessor implements org.quartz.Job{
-	private static int count = 0;
+	StoreCrawl st = new StoreCrawl();
+	SalesCrawl ss = new SalesCrawl();
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		// TODO Auto-generated method stub
-		System.out.println(++count + "µ·´Ù");
 		try {
-			Thread.sleep(900);
-		} catch (InterruptedException e) {
+			st.crawlStores();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			ss.crawlSales();
+		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(count + "³¡³µ´Ù");
+		
+		
 	}
 }

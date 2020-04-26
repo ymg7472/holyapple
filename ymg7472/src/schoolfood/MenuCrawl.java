@@ -38,8 +38,8 @@ public class MenuCrawl {
 			e.printStackTrace();
 		} 
 		Elements ele = doc.select("div.menuName span");
-		String menu = ele.text();
-		q.println(menu.replace(" ", "\n"));
+		String menu = "> " + ele.text();
+		q.println(menu.replace(" ", "\n > "));
 	}
 
 }

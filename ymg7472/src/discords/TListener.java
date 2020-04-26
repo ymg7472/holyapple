@@ -16,6 +16,7 @@ public class TListener extends ListenerAdapter{
 	@Override
 	public void onMessageReceived (MessageReceivedEvent event) {
 		User user = event.getAuthor();;
+		CoronaCrawl k = new CoronaCrawl();
 		MenuCrawl m = new MenuCrawl();
 		TextChannel tc = event.getTextChannel(); 
 		Message msg = event.getMessage();
@@ -26,27 +27,35 @@ public class TListener extends ListenerAdapter{
 			if(args[0].equalsIgnoreCase("급식")) {
 				String date = "";
 				date = args[1];
-				tc.sendMessage(m.menu(date)).queue();
-			}
-
-
-		}
-		for(int i=0; i<dicList.size(); i++) {
-			if(dicList.get(i).getWord().equals(msg.getContentRaw()) || dicList.get(i).getWord_root().equals(msg.getContentRaw())) {
-				int polarity = Integer.parseInt(dicList.get(i).getPolarity());
-				if(polarity == 2) {
-					tc.sendMessage(user.getName()+"의 기분은 환상적이군요!").queue();
-				}else if(polarity == 1) {
-					tc.sendMessage(user.getName()+"의 기분은 좋네요").queue();
-				}else if(polarity == 0) {
-					tc.sendMessage(user.getName()+"의 기분은 그냥 그렇네요").queue();
-				}else if(polarity == -1) {
-					tc.sendMessage(user.getName()+"의 기분은 조금 좋지 않군요").queue();
-				}else if(polarity == -2) {
-					tc.sendMessage(user.getName()+"의 기분은 최악이네요").queue();
+				if(!m.menu(date).equals(null)) {
+					tc.sendMessage(m.menu(date)).queue();
+				}else {
+					tc.sendMessage("찾을 수 없습니다.").queue();
 				}
+			}else if(args[0].equalsIgnoreCase("코로나")){
+				tc.sendMessage(k.korona()).queue();
+			}else if(args[0].equalsIgnoreCase("명령어")){
+				tc.sendMessage("!급식 날짜 : 그날의 급식을 출력합니다. Ex) !급식 20200401" + "\n" + "\n" + "!코로나 : 국내 코로나 현황을 출력합니다.").queue();
 			}
+
+
 		}
+//		for(int i=0; i<dicList.size(); i++) {
+//			if(dicList.get(i).getWord().equals(msg.getContentRaw()) || dicList.get(i).getWord_root().equals(msg.getContentRaw())) {
+//				int polarity = Integer.parseInt(dicList.get(i).getPolarity());
+//				if(polarity == 2) {
+//					tc.sendMessage(user.getName()+"의 기분은 환상적이군요!").queue();
+//				}else if(polarity == 1) {
+//					tc.sendMessage(user.getName()+"의 기분은 좋네요").queue();
+//				}else if(polarity == 0) {
+//					tc.sendMessage(user.getName()+"의 기분은 그냥 그렇네요").queue();
+//				}else if(polarity == -1) {
+//					tc.sendMessage(user.getName()+"의 기분은 조금 좋지 않군요").queue();
+//				}else if(polarity == -2) {
+//					tc.sendMessage(user.getName()+"의 기분은 최악이네요").queue();
+//				}
+//			}
+//		}
 		
 			
 	}
