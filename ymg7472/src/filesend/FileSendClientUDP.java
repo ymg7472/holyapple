@@ -6,16 +6,17 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+
 /**
  * <pre>
- * kr.co.swh.lecture.network.filetrans 
+ * filesend 
  * FileSendClientUDP.java
  *
- * 설명 :파일 전송 클라이언트
+ * 설명 : 파일 전송 클라이언트 udp
  * </pre>
  * 
- * @since : 2018. 12. 28.
- * @author : tobby48
+ * @since : 2020. 5. 24.
+ * @author : ymg74
  * @version : v1.0
  */
 public class FileSendClientUDP {

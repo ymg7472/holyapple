@@ -7,16 +7,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+
 /**
  * <pre>
- * kr.co.swh.lecture.network.filetrans 
- * FileSendClient.java
+ * filesend 
+ * FileSendClientTCP.java
  *
- * 설명 :파일 전송 클라이언트
+ * 설명 : 파일전송 클라이언트 tcp
  * </pre>
  * 
- * @since : 2018. 12. 28.
- * @author : tobby48
+ * @since : 2020. 5. 24.
+ * @author : ymg74
  * @version : v1.0
  */
 public class FileSendClientTCP {

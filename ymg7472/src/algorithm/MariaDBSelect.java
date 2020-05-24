@@ -8,14 +8,14 @@ import java.sql.Statement;
 
 /**
  * <pre>
- * kr.co.swh.lecture.database.java
+ * algorithm 
  * MariaDBSelect.java
  *
- * 설명 :데이터베이스 검색 예제
+ * 설명 : jdbc를 이용한 select 예제
  * </pre>
  * 
- * @since : 2017. 10. 26.
- * @author : tobby48
+ * @since : 2020. 5. 24.
+ * @author : ymg74
  * @version : v1.0
  */
 public class MariaDBSelect {
