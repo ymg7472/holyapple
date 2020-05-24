@@ -1,4 +1,4 @@
-package news_crawl;
+package calender_crawl;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;

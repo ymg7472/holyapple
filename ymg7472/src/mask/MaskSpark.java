@@ -59,5 +59,4 @@ public class MaskSpark {
 		}, new FreeMarkerTemplateEngine1());
 		
 	}
-
 }

@@ -1,4 +1,4 @@
-package sad;
+package properties;
 
 import java.io.IOException;
 import java.io.InputStream;

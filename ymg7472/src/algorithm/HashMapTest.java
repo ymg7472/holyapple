@@ -1,19 +1,13 @@
 package algorithm;
+import java.io.Console;
 import java.util.*;
 public class HashMapTest {
-	public static void main(String args[]) {
-		HashMap<Integer, String> s = new HashMap<Integer, String>();
-		s.put(1, "È«±æµ¿");
-		s.put(2, "±èÃ¶¼ö");
-		s.put(3, "±è¿µÈñ");
-		s.put(3, "sds");
-		if(s.containsKey(3)){
-			System.out.println(s.get(3));
+	public static void main(String args[]) throws InterruptedException {
+		System.out.println("HACKING START");
+		for(int i = 0; i<=100; i += 10) {
+			System.out.println(i + "%");
+			Thread.sleep(1000);
 		}
-		int index=0;
-		while(!s.isEmpty()){
-			String value = s.remove(++index);
-			System.out.println(value);
-		}
+		
 	}	
 }

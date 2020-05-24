@@ -1,4 +1,5 @@
-package news_crawl;
+package calender_crawl;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,18 +8,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.google.gson.GsonBuilder;
-public class DateSelect {
+import com.google.gson.Gson;
+
+public class IdSelect {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	static final String DB_URL = "jdbc:mysql://dev-swh.ga/minkyu";
 
 	static final String USERNAME = "root";
 	static final String PASSWORD = "swhacademy!";
-	public String getByDate(String sub1, String wantdate1) {
+	public String mama(String id) {
+	
 		Connection connection = null;
 		Statement statement = null;
-		ArrayList<String> ni = new ArrayList<String>();
-		ArrayList<C_news> hihi = new ArrayList<C_news>();
+		String result = "";
 		try{
 			Class.forName(JDBC_DRIVER);
 			connection = DriverManager.getConnection(DB_URL,USERNAME,PASSWORD);
@@ -27,7 +29,7 @@ public class DateSelect {
 
 
 			//	select
-			ResultSet rs = statement.executeQuery("select * from CrawlNews where subject = '" + sub1 + "' and date = " + wantdate1 +";");
+			ResultSet rs = statement.executeQuery("select * from CrawlNews where ID = '" + id + "';");
 
 			while(rs.next()){
 				C_news n = new C_news();
@@ -36,7 +38,7 @@ public class DateSelect {
 				n.setContents(rs.getString("contents"));
 				n.setDate(rs.getString("date"));
 				n.setSubject(rs.getString("subject"));
-				hihi.add(n);
+				result = new Gson().toJson(n);
 			}
 			rs.close();
 		}catch(SQLException se1){
@@ -50,9 +52,6 @@ public class DateSelect {
 			}catch(SQLException se2){
 			}
 		}
-		String lili = new GsonBuilder().serializeNulls().create().toJson(hihi);
-		return lili;
+		return result;
 	}
-
-
 }

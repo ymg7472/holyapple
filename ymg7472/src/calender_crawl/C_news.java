@@ -1,4 +1,4 @@
-package news_crawl;
+package calender_crawl;
 
 //import lombok.Data;
 //import lombok.EqualsAndHashCode;

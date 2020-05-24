@@ -1,4 +1,4 @@
-package news_crawl;
+package calender_crawl;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

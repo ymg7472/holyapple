@@ -1,4 +1,4 @@
-package news_crawl;
+package calender_crawl;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.PrintStream;

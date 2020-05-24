@@ -1,5 +1,6 @@
 package mask;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,6 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.hibernate.SessionFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import com.google.gson.Gson;
 
 import mask.model.MaskInfo;
 import mask.model.Sales;
@@ -21,7 +26,7 @@ public class DatabaseUtil {
 	
 	Connection connection = null;
 	Statement statement = null;
-	DatabaseUtil (String url, String name, String pw) {
+	public DatabaseUtil (String url, String name, String pw) {
 		DB_URL = url;
 		USERNAME = name;
 		PASSWORD = pw;
@@ -104,6 +109,28 @@ public class DatabaseUtil {
 		}
 		return hihi;
 
+	}
+	public void crawlSales() throws SQLException, ClassNotFoundException{
+		long beforeTime = System.currentTimeMillis();
+		Document doc= null;
+		int page = 0;
+		String page1 = "";
+		Gson gson = new Gson();
+		SessionFactory sessionFactory = HibernateUtil7.getSessionFactory();
+		while(true) {
+			page++;
+			if(page==37) continue;
+			page1 = Integer.toString(page);
+			String url = "https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/sales/json?page=" + page1;
+			try {
+				doc = Jsoup.connect(url).ignoreContentType(true).timeout(0).get();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			String pre = doc.text();
+		}
+		
 	}
 	public void close() {
 		try{

@@ -1,4 +1,4 @@
-package news_crawl;
+package calender_crawl;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

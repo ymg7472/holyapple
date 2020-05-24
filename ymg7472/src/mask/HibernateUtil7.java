@@ -8,6 +8,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import mask.model.Sales;
+import mask.model.Stores;
 
 /**
  * <pre>
@@ -31,7 +32,7 @@ public class HibernateUtil7 {
 			
 			//	¿¹Á¦1
 			configuration.addAnnotatedClass(Sales.class);
-			
+			configuration.addAnnotatedClass(Stores.class);
 			
 			serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 			sessionFactory = configuration.buildSessionFactory(serviceRegistry);

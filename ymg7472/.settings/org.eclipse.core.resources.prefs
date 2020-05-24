@@ -1,5 +1,7 @@
 eclipse.preferences.version=1
+encoding//resources/freemarker/pie.ftl=UTF-8
 encoding//src/algorithm/Testf.java=UTF-8
-encoding//src/news_crawl/Is.java=UTF-8
-encoding//src/news_crawl/Morpheme1.java=UTF-8
-encoding//src/news_crawl/t1.java=UTF-8
+encoding//src/calender_crawl/Is.java=UTF-8
+encoding//src/calender_crawl/Morpheme1.java=UTF-8
+encoding//src/calender_crawl/t1.java=UTF-8
+encoding//src/chartjs/ChartTest.java=UTF-8

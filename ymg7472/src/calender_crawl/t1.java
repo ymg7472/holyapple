@@ -1,4 +1,4 @@
-package news_crawl;
+package calender_crawl;
 
 import static spark.Spark.get;
 import static spark.Spark.modelAndView;
@@ -65,10 +65,11 @@ public class t1 {
 				session.beginTransaction();
 				session.save(jnews);
 				session.getTransaction().commit();
+				session.close();
 			} catch (Exception e1) {
 				System.out.println(e1.getMessage());
-			}
-
+			} 
+			
 			return "success " + jnews.toString();
 
 

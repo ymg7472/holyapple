@@ -1,4 +1,4 @@
-package news_crawl;
+package calender_crawl;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +23,6 @@ import org.apache.http.util.EntityUtils;
 import org.bitbucket.eunjeon.seunjeon.Analyzer;
 import org.bitbucket.eunjeon.seunjeon.LNode;
 import org.bitbucket.eunjeon.seunjeon.Morpheme;
-import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -40,7 +38,7 @@ public class DatabaseUtil {
 	
 	Connection connection = null;
 	Statement statement = null;
-	DatabaseUtil (String url, String name, String pw) {
+	public DatabaseUtil (String url, String name, String pw) {
 		DB_URL = url;
 		USERNAME = name;
 		PASSWORD = pw;
@@ -134,7 +132,7 @@ public class DatabaseUtil {
 		List<String> keList = new ArrayList<>(map.keySet());
 		List<Integer> vaList = new ArrayList<>(map.values());
 		for(int i = 0; i<map.size(); i++) {
-			if(vaList.get(i)>=8) {
+			if(vaList.get(i)>=20) {
 				WordCloud w = new WordCloud(keList.get(i), vaList.get(i));
 				wl.add(w);
 			}

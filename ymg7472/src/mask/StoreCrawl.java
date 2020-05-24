@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import com.google.gson.Gson;
-
 import mask.model.ResponseStores;
 import mask.model.Stores;
 
@@ -19,7 +18,7 @@ public class StoreCrawl {
 		int page = 0;
 		String page1 = "";
 		Gson gson = new Gson();
-		SessionFactory sessionFactory = HibernateUtil8.getSessionFactory();
+		SessionFactory sessionFactory = HibernateUtil7.getSessionFactory();
 		while(true) {
 			page++;
 			page1 = Integer.toString(page);	
