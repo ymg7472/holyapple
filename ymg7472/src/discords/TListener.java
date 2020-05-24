@@ -1,5 +1,6 @@
 package discords;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -17,6 +18,7 @@ public class TListener extends ListenerAdapter{
 	public void onMessageReceived (MessageReceivedEvent event) {
 		User user = event.getAuthor();;
 		CoronaCrawl k = new CoronaCrawl();
+		EmbedBuilder result = new EmbedBuilder();
 		MenuCrawl m = new MenuCrawl();
 		TextChannel tc = event.getTextChannel(); 
 		Message msg = event.getMessage();
@@ -35,7 +37,11 @@ public class TListener extends ListenerAdapter{
 			}else if(args[0].equalsIgnoreCase("코로나")){
 				tc.sendMessage(k.korona()).queue();
 			}else if(args[0].equalsIgnoreCase("명령어")){
-				tc.sendMessage("!급식 날짜 : 그날의 급식을 출력합니다. Ex) !급식 20200401" + "\n" + "\n" + "!코로나 : 국내 코로나 현황을 출력합니다.").queue();
+				tc.sendMessage("!급식 + 날짜 : 그날의 급식을 출력합니다. 예) !급식 20200527" + "\n" + "!코로나 : 국내 코로나 현황을 출력합니다.").queue();
+			}else if(args[0].equalsIgnoreCase("엄준식")){
+				result.setTitle("엄");
+		        result.setImage("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR-Fd_f90rUmrvT_VCxDsdfQ51LtlVHyNykO-FgMjpcLv6O8u1J&usqp=CAU");
+		        event.getChannel().sendMessage(result.build()).queue();
 			}
 
 

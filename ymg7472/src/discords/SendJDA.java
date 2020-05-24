@@ -30,7 +30,7 @@ public class SendJDA {
 		List<SentimentalDic> dicList = initDatas();
 		JDABuilder jb = new JDABuilder(AccountType.BOT);
 		jb.setAutoReconnect(true);
-		jb.setToken("NjU4Mjc0Mjk4MDg3MzQyMDkx.Xiqx5A.eerQaSWs3MA_MdBKz0rRgU1ZNhI");
+		jb.setToken("NjU4Mjc0Mjk4MDg3MzQyMDkx.XspFRQ.s4hCftAWgLxjR3z1JsqDb5RWs24");
 		jb.addEventListeners(new TListener(dicList));
 		jb.setStatus(OnlineStatus.ONLINE);
 		String ss = "Ss";
