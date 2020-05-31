@@ -33,9 +33,7 @@ table#t01 th {
 <th>type</th>
 <th>lat</th>
 <th>lng</th>
-<th>remain_stat</th>
-<th>created_at</th>
-<th>stock_at</th>
+
 </tr>
 <#list stores as i>
 <tr>
