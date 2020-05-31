@@ -105,7 +105,7 @@ public class DatabaseUtil {
 	public ArrayList<Stores> getStore() {
 		ArrayList<Stores> hihi = new ArrayList<Stores>();
 		try {
-			ResultSet rs = statement.executeQuery("SELECT * FROM maskstores limit 100;");
+			ResultSet rs = statement.executeQuery("SELECT * FROM maskstores;");
 
 			while(rs.next()){
 				Stores s = new Stores();
@@ -209,7 +209,30 @@ public class DatabaseUtil {
 		System.out.println("소요시간(초) : "+secDiffTime);
 	}
 	
-	
+	public ArrayList<MaskInfo> getMaskInfoByName(String s) {
+		ArrayList<MaskInfo> hihi = new ArrayList<MaskInfo>();
+		try {
+		ResultSet rs = statement.executeQuery("SELECT a.created_at, a.remain_stat, a.stock_at, b.code, b.name, b.addr, b.`type`, b.lat, b.lng FROM masksales AS a, maskstores AS b WHERE a.code=b.code AND b.name like '%"+ s +"%';");
+		while(rs.next()){
+			MaskInfo m = new MaskInfo(); 
+			m.setCode(rs.getString("code"));
+			m.setName(rs.getString("name"));
+			m.setAddr(rs.getString("addr"));
+			m.setType(rs.getString("type"));
+			m.setLat(rs.getString("lat"));
+			m.setLng(rs.getString("lng"));
+			m.setCreated_at(rs.getString("created_at"));
+			m.setRemain_stat(rs.getString("remain_stat"));
+			m.setStock_at(rs.getString("stock_at"));
+			hihi.add(m);
+		}
+		rs.close();
+		}catch(SQLException se1){
+			se1.printStackTrace();
+		}
+		
+		return hihi;
+	}
 	public void close() {
 		try{
 			if(statement!=null) statement.close();

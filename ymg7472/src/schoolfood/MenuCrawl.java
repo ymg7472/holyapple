@@ -19,8 +19,9 @@ public class MenuCrawl {
 			e.printStackTrace();
 		} 
 		Elements ele = doc.select("div.menuName span");
-		String menu = ele.text();
-		return menu.replace(" ", "\n");
+		String final1 = ele.text().replace(" ", "\n > ");
+		if(ele.eachText().toString().equals("[]")) final1 = "¾ø³ë";
+		return final1;
 		
 	}
 	public static void main(String[] args) {
@@ -38,6 +39,7 @@ public class MenuCrawl {
 			e.printStackTrace();
 		} 
 		Elements ele = doc.select("div.menuName span");
+		System.out.println(ele.eachText());
 		String menu = "> " + ele.text();
 		q.println(menu.replace(" ", "\n > "));
 	}

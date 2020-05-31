@@ -10,6 +10,18 @@ import com.google.gson.GsonBuilder;
 import mask.model.MaskInfo;
 import mask.model.Sales;
 import mask.model.Stores;
+/**
+ * <pre>
+ * mask 
+ * MaskSpark.java
+ *
+ * 설명 : 마스크에 관한 정보 spark
+ * </pre>
+ * 
+ * @since : 2020. 5. 31.
+ * @author : ymg74
+ * @version : v1.0
+ */
 public class MaskSpark {
 
 	public static void main(String[] args) {
@@ -49,11 +61,24 @@ public class MaskSpark {
 			return modelAndView(attributes, "maskinfo.ftl");
 		}, new FreeMarkerTemplateEngine1());
 		
-		get("/test", (request, response) -> {
+		get("/map", (request, response) -> {
 			ArrayList<MaskInfo> hihi = db.getMaskInfo();
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("sss", hihi);
 			return modelAndView(attributes, "maskmap.ftl");
+		}, new FreeMarkerTemplateEngine1());
+		
+		get("/mapByName/:name", (request, response) -> {
+			ArrayList<MaskInfo> hihi = db.getMaskInfoByName(request.params(":name"));
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("sss", hihi);
+			return modelAndView(attributes, "maskmap.ftl");
+		}, new FreeMarkerTemplateEngine1());
+		
+		get("/redirect", (request, response) -> {
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("sss", "sd");
+			return modelAndView(attributes, "redirect.ftl");
 		}, new FreeMarkerTemplateEngine1());
 		
 	}

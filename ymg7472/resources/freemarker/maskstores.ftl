@@ -33,15 +33,31 @@ table#t01 th {
 <th>type</th>
 <th>lat</th>
 <th>lng</th>
+<th>remain_stat</th>
+<th>created_at</th>
+<th>stock_at</th>
 </tr>
 <#list stores as i>
 <tr>
+<#if i.code?has_content>
 <td>${i.code}</td>
+</#if>
+<#if i.name?has_content>
 <td>${i.name}</td>
+</#if>
+<#if i.addr?has_content>
 <td>${i.addr}</td>
+</#if>
+<#if i.type?has_content>
 <td>${i.type}</td>
+</#if>
+<#if i.lat?has_content>
 <td>${i.lat}</td>
+</#if>
+<#if i.lng?has_content>
 <td>${i.lng}</td>
+</#if>
+
 </tr>
 </#list>
 </table>

@@ -21,7 +21,7 @@ import java.sql.Statement;
 public class MariaDBSelect {
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://dev-swh.ga/market";
+	static final String DB_URL = "jdbc:mysql://dev-swh.ga/minkyu";
 
 	static final String USERNAME = "root";
 	static final String PASSWORD = "swhacademy!";
