@@ -1,7 +1,9 @@
 package quartz;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.UUID;
 
 import org.quartz.CronScheduleBuilder;
@@ -12,16 +14,17 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
+
 /**
  * <pre>
- * kr.co.swh.lecture.opensource.quartz
+ * quartz 
  * QuartzMain.java
  *
  * 설명 :
  * </pre>
  * 
- * @since : 2018. 9. 30.
- * @author : tobby48
+ * @since : 2020. 5. 31.
+ * @author : ymg74
  * @version : v1.0
  */
 public class QuartzMain {
@@ -80,6 +83,11 @@ public class QuartzMain {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		QuartzMain quartz = new QuartzMain();
+		long time = System.currentTimeMillis(); 
+
+		SimpleDateFormat dayTime = new SimpleDateFormat("hh");
+
+		String str = dayTime.format(new Date(time));
 		
 //		0/1 * * * * ?         매 1초 간격
 //		0 0/1 * * * ?         매 1분 간격
@@ -89,15 +97,8 @@ public class QuartzMain {
 //		0 0 0 1,10,20 * ?    매월 1일, 10일, 20일 마다
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH");
 		LocalDateTime now = LocalDateTime.now();
-		if(quartz.initialise("0/10 * * * * ?", SchedulerProcessor.class)){
+		if(quartz.initialise("0 0 0/1 * * ?", SchedulerProcessor.class)){
 			quartz.start();
-//			try {
-//				Thread.sleep(10000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			quartz.stop();
 		}
 	}
 }

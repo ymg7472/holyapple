@@ -21,6 +21,10 @@ public class t1 {
 	public static void main(String[] args) {
 		DatabaseUtil db = new DatabaseUtil("jdbc:mysql://dev-swh.ga/minkyu", "root", "swhacademy!");
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		get("/", (request, response) -> {
+			return modelAndView(null, "test.ftl");
+		}, new FreeMarkerTemplateEngine());
+		
 		get("/news/:subject/:date", (request, response) -> {
 			response.type("application/json");
 			String ji = db.byDate(request.params(":subject"), request.params(":date"));

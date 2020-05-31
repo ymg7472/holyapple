@@ -38,8 +38,6 @@ public class MaskSpark {
 		get("/sales/json", (request, response) -> {
 			response.type("application/json");
 			String ki = new GsonBuilder().serializeNulls().create().toJson(db.getSales());
-			
-			
 			return ki;
 		});
 		get("/sales/table", (request, response) -> {
