@@ -26,11 +26,13 @@ public class MaskSpark {
 
 	public static void main(String[] args) {
 		DatabaseUtil db = new DatabaseUtil("jdbc:mysql://dev-swh.ga/minkyu", "root", "swhacademy!");
+		get("/", (request, response) -> {
+			return modelAndView(null, "redirect.ftl");
+		}, new FreeMarkerTemplateEngine1());
+		
 		get("/stores/json", (request, response) -> {
 			response.type("application/json");
-			String ki = new GsonBuilder().serializeNulls().create().toJson(db.getStore());
-			
-			
+			String ki = new GsonBuilder().serializeNulls().create().toJson(db.getStore());	
 			return ki;
 		});
 		get("/sales/json", (request, response) -> {
@@ -75,11 +77,6 @@ public class MaskSpark {
 			return modelAndView(attributes, "maskmap.ftl");
 		}, new FreeMarkerTemplateEngine1());
 		
-		get("/", (request, response) -> {
-			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("sss", "sd");
-			return modelAndView(attributes, "redirect.ftl");
-		}, new FreeMarkerTemplateEngine1());
 		
 	}
 }
