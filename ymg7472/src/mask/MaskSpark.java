@@ -75,7 +75,7 @@ public class MaskSpark {
 			return modelAndView(attributes, "maskmap.ftl");
 		}, new FreeMarkerTemplateEngine1());
 		
-		get("/redirect", (request, response) -> {
+		get("/", (request, response) -> {
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("sss", "sd");
 			return modelAndView(attributes, "redirect.ftl");
