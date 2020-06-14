@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bitbucket.eunjeon.seunjeon.Analyzer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import naver_news_spark.models.WordCloud;
 public class ChartSpark {
 
 	public static void main(String[] args) {
+		Analyzer.resetUserDict();
 		DatabaseUtil db = new DatabaseUtil("jdbc:mysql://dev-swh.ga/minkyu", "root", "swhacademy!");
 		get("/pie/:subject/:date", (request, response) -> {
 			ArrayList <WordCloud> wordList = db.baba(request.params(":subject"), request.params(":date"));

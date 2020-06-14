@@ -21,7 +21,20 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.TextChannel;
 
+/**
+ * <pre>
+ * discords 
+ * SendJDA.java
+ *
+ * 설명 : 디스코드 봇 실행
+ * </pre>
+ * 
+ * @since : 2020. 5. 31.
+ * @author : ymg74
+ * @version : v1.0
+ */
 public class SendJDA {
 
 	public static JDA jda;
@@ -30,10 +43,9 @@ public class SendJDA {
 		List<SentimentalDic> dicList = initDatas();
 		JDABuilder jb = new JDABuilder(AccountType.BOT);
 		jb.setAutoReconnect(true);
-		jb.setToken("NjU4Mjc0Mjk4MDg3MzQyMDkx.XspFRQ.s4hCftAWgLxjR3z1JsqDb5RWs24");
+		jb.setToken("NjU4Mjc0Mjk4MDg3MzQyMDkx.XtNFDA.AibVLtG7dncvbBacFppAyU-5-IU");
 		jb.addEventListeners(new TListener(dicList));
 		jb.setStatus(OnlineStatus.ONLINE);
-		String ss = "Ss";
 		try {
 			jda = jb.build();
 			jda.getPresence().setActivity(Activity.listening("!명령어"));
@@ -41,6 +53,8 @@ public class SendJDA {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		
 	}
 
 	public static List<SentimentalDic> initDatas() {

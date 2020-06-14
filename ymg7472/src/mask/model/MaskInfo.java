@@ -1,5 +1,8 @@
 package mask.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class MaskInfo {
 	private String code;
 	private String name;
@@ -69,5 +72,17 @@ public class MaskInfo {
 	}
 	public void setStock_at(String stock_at) {
 		this.stock_at = stock_at;
+	}
+	public void setAll(ResultSet rs) throws SQLException{
+		this.code = rs.getString("code");
+		this.name = rs.getString("name");
+		this.addr = rs.getString("addr");
+		this.type = rs.getString("type");
+		this.lat = rs.getString("lat");
+		this.lng = rs.getString("lng");
+		this.created_at = rs.getString("created_at");
+		this.remain_stat = rs.getString("remain_stat");
+		this.stock_at = rs.getString("stock_at");
+
 	}
 }

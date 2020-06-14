@@ -64,15 +64,7 @@ public class DatabaseUtil {
 		ResultSet rs = statement.executeQuery("SELECT a.created_at, a.remain_stat, a.stock_at, b.code, b.name, b.addr, b.`type`, b.lat, b.lng FROM masksales AS a, maskstores AS b WHERE a.code=b.code AND b.addr like '경기도 이천%';");
 		while(rs.next()){
 			MaskInfo m = new MaskInfo(); 
-			m.setCode(rs.getString("code"));
-			m.setName(rs.getString("name"));
-			m.setAddr(rs.getString("addr"));
-			m.setType(rs.getString("type"));
-			m.setLat(rs.getString("lat"));
-			m.setLng(rs.getString("lng"));
-			m.setCreated_at(rs.getString("created_at"));
-			m.setRemain_stat(rs.getString("remain_stat"));
-			m.setStock_at(rs.getString("stock_at"));
+			m.setAll(rs);
 			hihi.add(m);
 		}
 		rs.close();

@@ -4,16 +4,27 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import schoolfood.MenuCrawl;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
+
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Consumer;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
 public class TListener extends ListenerAdapter{
 	List<SentimentalDic> dicList;
 	public TListener(List<SentimentalDic> dicList) {
 		this.dicList = dicList;
 	}
+
 	@Override
 	public void onMessageReceived (MessageReceivedEvent event) {
 		User user = event.getAuthor();;
@@ -30,7 +41,12 @@ public class TListener extends ListenerAdapter{
 				String date = "";
 				date = args[1];
 				if(!m.menu(date).equals(null)) {
-					tc.sendMessage(m.menu(date)).queue();
+					try {
+						tc.sendMessage(m.menu(date)).queue();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}else {
 					tc.sendMessage("찾을 수 없습니다.").queue();
 				}
