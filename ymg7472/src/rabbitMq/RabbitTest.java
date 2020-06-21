@@ -8,13 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import com.google.gson.Gson;
 import java.util.concurrent.TimeoutException;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;

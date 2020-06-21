@@ -39,7 +39,6 @@ public class MenuCrawl {
 			e.printStackTrace();
 		} 
 		Elements ele = doc.select("div.menuName span");
-		System.out.println(ele.eachText());
 		String menu = "> " + ele.text();
 		q.println(menu.replace(" ", "\n > "));
 	}

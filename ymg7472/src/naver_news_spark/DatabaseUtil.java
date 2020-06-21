@@ -30,37 +30,20 @@ import org.jsoup.select.Elements;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import mask.DbUtil;
 import naver_news_spark.models.C_news;
 import naver_news_spark.models.WordCloud;
 
-public class DatabaseUtil {
-	final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	String DB_URL = null;
-	String USERNAME = null;
-	String PASSWORD = null;
+public class DatabaseUtil extends DbUtil{
 	
-	Connection connection = null;
-	Statement statement = null;
-	public DatabaseUtil (String url, String name, String pw) {
-		DB_URL = url;
-		USERNAME = name;
-		PASSWORD = pw;
-		try{
-			Class.forName(JDBC_DRIVER);
-			connection = DriverManager.getConnection(DB_URL,USERNAME,PASSWORD);
-			System.out.println("MariaDB ¿¬°á.");
-			statement = connection.createStatement();
-		}catch(SQLException se1){
-			se1.printStackTrace();
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}
+	public DatabaseUtil(String url, String name, String pw) {
+		super(url, name, pw);
 	}
-	
+
 	public String byId(String id) {
 		String result = "";
 		try {
-		ResultSet rs = statement.executeQuery("select * from CrawlNews where ID = '" + id + "';");
+		ResultSet rs = getStatement().executeQuery("select * from CrawlNews where ID = '" + id + "';");
 		while(rs.next()){
 			C_news n = new C_news();
 			n.setId(rs.getString("ID"));
@@ -81,7 +64,7 @@ public class DatabaseUtil {
 	public String byDate(String sub1, String wantdate1) {
 		ArrayList<C_news> hihi = new ArrayList<C_news>();
 		try {
-			ResultSet rs = statement.executeQuery("select * from CrawlNews where subject = '" + sub1 + "' and date = " + wantdate1 +";");
+			ResultSet rs = getStatement().executeQuery("select * from CrawlNews where subject = '" + sub1 + "' and date = " + wantdate1 +";");
 
 			while(rs.next()){
 				C_news n = new C_news();
@@ -104,7 +87,7 @@ public class DatabaseUtil {
 		String mor = "";
 		ArrayList<String> data = new ArrayList<String>();	
 		try{
-			ResultSet rs = statement.executeQuery("select * from CrawlNews where subject = '" + sub1 + "' and date = " + wantdate1 +";");
+			ResultSet rs = getStatement().executeQuery("select * from CrawlNews where subject = '" + sub1 + "' and date = " + wantdate1 +";");
 
 			while(rs.next()){
 				for (LNode node : Analyzer.parseJava(rs.getString("title"))) {
@@ -261,8 +244,8 @@ public class DatabaseUtil {
 	}
 	public void close() {
 		try{
-			if(statement!=null) statement.close();
-			if(connection!=null) connection.close();
+			if(getStatement()!=null) getStatement().close();
+			if(getConnection()!=null) getConnection().close();
 		}catch(SQLException se2){
 			se2.printStackTrace();
 		}

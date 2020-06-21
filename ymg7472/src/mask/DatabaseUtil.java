@@ -34,34 +34,16 @@ import mask.model.Stores;
  * @author : ymg74
  * @version : v1.0
  */
-public class DatabaseUtil {
-	final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	String DB_URL = null;
-	String USERNAME = null;
-	String PASSWORD = null;
+public class DatabaseUtil extends DbUtil{
+
 	
-	Connection connection = null;
-	Statement statement = null;
-	public DatabaseUtil (String url, String name, String pw) {
-		DB_URL = url;
-		USERNAME = name;
-		PASSWORD = pw;
-		try{
-			Class.forName(JDBC_DRIVER);
-			connection = DriverManager.getConnection(DB_URL,USERNAME,PASSWORD);
-			System.out.println("MariaDB 연결.");
-			statement = connection.createStatement();
-		}catch(SQLException se1){
-			se1.printStackTrace();
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}
+	public DatabaseUtil(String url, String name, String pw) {
+		super(url, name, pw);
 	}
-	
 	public ArrayList<MaskInfo> getMaskInfo() {
 		ArrayList<MaskInfo> hihi = new ArrayList<MaskInfo>();
 		try {
-		ResultSet rs = statement.executeQuery("SELECT a.created_at, a.remain_stat, a.stock_at, b.code, b.name, b.addr, b.`type`, b.lat, b.lng FROM masksales AS a, maskstores AS b WHERE a.code=b.code AND b.addr like '경기도 이천%';");
+		ResultSet rs = getStatement().executeQuery("SELECT a.created_at, a.remain_stat, a.stock_at, b.code, b.name, b.addr, b.`type`, b.lat, b.lng FROM masksales AS a, maskstores AS b WHERE a.code=b.code AND b.addr like '경기도 이천%';");
 		while(rs.next()){
 			MaskInfo m = new MaskInfo(); 
 			m.setAll(rs);
@@ -77,7 +59,7 @@ public class DatabaseUtil {
 	public ArrayList<Sales> getSales() {
 		ArrayList<Sales> hihi = new ArrayList<Sales>();
 		try {
-			ResultSet rs = statement.executeQuery("select * from masksales;");
+			ResultSet rs = getStatement().executeQuery("select * from masksales;");
 			while(rs.next()){
 				Sales s = new Sales();
 				s.setCode(rs.getString("code"));
@@ -97,7 +79,7 @@ public class DatabaseUtil {
 	public ArrayList<Stores> getStore() {
 		ArrayList<Stores> hihi = new ArrayList<Stores>();
 		try {
-			ResultSet rs = statement.executeQuery("SELECT * FROM maskstores;");
+			ResultSet rs = getStatement().executeQuery("SELECT * FROM maskstores;");
 
 			while(rs.next()){
 				Stores s = new Stores();
@@ -204,7 +186,7 @@ public class DatabaseUtil {
 	public ArrayList<MaskInfo> getMaskInfoByName(String s) {
 		ArrayList<MaskInfo> hihi = new ArrayList<MaskInfo>();
 		try {
-		ResultSet rs = statement.executeQuery("SELECT a.created_at, a.remain_stat, a.stock_at, b.code, b.name, b.addr, b.`type`, b.lat, b.lng FROM masksales AS a, maskstores AS b WHERE a.code=b.code AND b.name like '%"+ s +"%';");
+		ResultSet rs = getStatement().executeQuery("SELECT a.created_at, a.remain_stat, a.stock_at, b.code, b.name, b.addr, b.`type`, b.lat, b.lng FROM masksales AS a, maskstores AS b WHERE a.code=b.code AND b.name like '%"+ s +"%';");
 		while(rs.next()){
 			MaskInfo m = new MaskInfo(); 
 			m.setCode(rs.getString("code"));
@@ -227,8 +209,8 @@ public class DatabaseUtil {
 	}
 	public void close() {
 		try{
-			if(statement!=null) statement.close();
-			if(connection!=null) connection.close();
+			if(getStatement()!=null) getStatement().close();
+			if(getConnection()!=null) getConnection().close();
 		}catch(SQLException se2){
 			se2.printStackTrace();
 		}
