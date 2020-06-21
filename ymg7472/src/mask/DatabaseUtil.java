@@ -207,13 +207,6 @@ public class DatabaseUtil extends DbUtil{
 		
 		return hihi;
 	}
-	public void close() {
-		try{
-			if(getStatement()!=null) getStatement().close();
-			if(getConnection()!=null) getConnection().close();
-		}catch(SQLException se2){
-			se2.printStackTrace();
-		}
-	}
+
 	
 }
