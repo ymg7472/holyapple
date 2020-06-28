@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import schoolfood.MenuCrawl;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -19,6 +18,8 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+
+import crawling.CrawlUtill;
 public class TListener extends ListenerAdapter{
 	List<SentimentalDic> dicList;
 	public TListener(List<SentimentalDic> dicList) {
@@ -28,9 +29,8 @@ public class TListener extends ListenerAdapter{
 	@Override
 	public void onMessageReceived (MessageReceivedEvent event) {
 		User user = event.getAuthor();;
-		CoronaCrawl k = new CoronaCrawl();
 		EmbedBuilder result = new EmbedBuilder();
-		MenuCrawl m = new MenuCrawl();
+		CrawlUtill cr = new CrawlUtill();
 		TextChannel tc = event.getTextChannel(); 
 		Message msg = event.getMessage();
 		if(user.isBot()) return; 
@@ -40,9 +40,9 @@ public class TListener extends ListenerAdapter{
 			if(args[0].equalsIgnoreCase("급식")) {
 				String date = "";
 				date = args[1];
-				if(!m.menu(date).equals(null)) {
+				if(!cr.menu(date).equals(null)) {
 					try {
-						tc.sendMessage(m.menu(date)).queue();
+						tc.sendMessage(cr.menu(date)).queue();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -51,7 +51,7 @@ public class TListener extends ListenerAdapter{
 					tc.sendMessage("찾을 수 없습니다.").queue();
 				}
 			}else if(args[0].equalsIgnoreCase("코로나")){
-				tc.sendMessage(k.korona()).queue();
+				tc.sendMessage(cr.korona()).queue();
 			}else if(args[0].equalsIgnoreCase("명령어")){
 				tc.sendMessage("!급식 + 날짜 : 그날의 급식을 출력합니다. 예) !급식 20200527" + "\n" + "!코로나 : 국내 코로나 현황을 출력합니다.").queue();
 			}else if(args[0].equalsIgnoreCase("엄준식")){
