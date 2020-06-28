@@ -17,10 +17,11 @@ import org.jsoup.select.Elements;
  * @author : ymg74
  * @version : v1.0
  */
-public class CrawlUtill {
+public class CrawlUtil {
 	
 	private Document doc= null;
-	CrawlUtill cr = new CrawlUtill();
+	CrawlUtil cr = new CrawlUtil();
+	
 	public String menu(String s) {
 		String date = s;
 		String url = "http://www.jpo.ms.kr/lunch.view?date=" + date;
@@ -43,6 +44,7 @@ public class CrawlUtill {
 		String fin = "**" + k1 + "\n" + k2 + "**";
 		return fin;
 	}
+	
 	public Document crawl(String url) {
 		try {
 			doc = Jsoup.connect(url).timeout(0).get();

@@ -19,7 +19,7 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
-import crawling.CrawlUtill;
+import crawling.CrawlUtil;
 public class TListener extends ListenerAdapter{
 	List<SentimentalDic> dicList;
 	public TListener(List<SentimentalDic> dicList) {
@@ -30,7 +30,7 @@ public class TListener extends ListenerAdapter{
 	public void onMessageReceived (MessageReceivedEvent event) {
 		User user = event.getAuthor();;
 		EmbedBuilder result = new EmbedBuilder();
-		CrawlUtill cr = new CrawlUtill();
+		CrawlUtil cr = new CrawlUtil();
 		TextChannel tc = event.getTextChannel(); 
 		Message msg = event.getMessage();
 		if(user.isBot()) return; 
