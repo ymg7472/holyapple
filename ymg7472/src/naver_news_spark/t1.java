@@ -74,7 +74,7 @@ public class t1 {
 				System.out.println(e1.getMessage());
 			} 
 			
-			return "success " + jnews.toString();
+			return "success ";
 
 
 		});

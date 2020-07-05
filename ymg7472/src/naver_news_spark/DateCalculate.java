@@ -126,16 +126,7 @@ class DateCalculate {
 	}
 
 
-	public static void main(String[] args) throws IOException {
-		DatabaseUtil db = new DatabaseUtil("jdbc:mysql://dev-swh.ga/minkyu", "root", "swhacademy!");
-		Scanner sc = new Scanner(System.in);
-		System.out.println("원하는 날짜?");
-		String wantDate = sc.nextLine();
-		System.out.println("정치, 경제, 사회, 문화 중 택일");
-		String wantSub = sc.nextLine();
-		db.crawlNews(wantSub, wantDate);
-	}
-		
+
 	//		SlackApi api = new SlackApi("https://hooks.slack.com/services/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");
 	//		SlackAttachment attach = new SlackAttachment();
 	//		attach.setTimestamp(new java.util.Date());

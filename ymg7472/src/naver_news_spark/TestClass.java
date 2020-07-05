@@ -1,5 +1,8 @@
 package naver_news_spark; 
 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -18,7 +21,14 @@ public class TestClass {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		DatabaseUtil db = new DatabaseUtil("jdbc:mysql://dev-swh.ga/minkyu", "root", "swhacademy!");
+		try {
+			db.crawlNews("Á¤Ä¡", "20200704", "rabbit");
+		} catch (IOException | TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		db.close();
 	}
 
 }

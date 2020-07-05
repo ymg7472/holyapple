@@ -2,19 +2,18 @@ package naver_news_spark;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -29,6 +28,9 @@ import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 
 import mask.DbUtil;
 import naver_news_spark.models.C_news;
@@ -83,6 +85,27 @@ public class DatabaseUtil extends DbUtil{
 		return lili;
 	}
 	
+	public String byTitle(String title) {
+		ArrayList<C_news> hihi = new ArrayList<C_news>();
+		try {
+			ResultSet rs = getStatement().executeQuery("select * from CrawlNews where title like '%" + title + "%';");
+
+			while(rs.next()){
+				C_news n = new C_news();
+				n.setId(rs.getString("ID"));
+				n.setTitle(rs.getString("title"));
+				n.setContents("생략");
+				n.setDate(rs.getString("date"));
+				n.setSubject(rs.getString("subject"));
+				hihi.add(n);
+			}
+			rs.close();
+		}catch(SQLException se1){
+			se1.printStackTrace();
+		}
+		String lili = new GsonBuilder().serializeNulls().create().toJson(hihi);
+		return lili;
+	}
 	public ArrayList<WordCloud> baba(String sub1, String wantdate1) {
 		String mor = "";
 		ArrayList<String> data = new ArrayList<String>();	
@@ -126,10 +149,17 @@ public class DatabaseUtil extends DbUtil{
 		
 		return wl;
 	}
-	public void crawlNews(String wantSub, String wantDate) throws IOException{
+	private static final String EXCHANGE_NAME = "ymg7472";
+	public void crawlNews(String wantSub, String wantDate, String choose) throws ParseException, IOException, TimeoutException{
 		PrintStream s = System.out;
 		String num1="100";
 		String num2="269";
+		ConnectionFactory factory = new ConnectionFactory();
+		factory.setHost("dev-swh.ga");
+		Connection connection = factory.newConnection();
+		Channel channel = connection.createChannel();
+		channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+		String routingKey = "test";
 		int how = 0;
 		HttpClient client = HttpClients.createDefault();
 		HttpPost request = new HttpPost("http://localhost:4567/users");
@@ -149,7 +179,6 @@ public class DatabaseUtil extends DbUtil{
 		}
 		ArrayList<String> links = new ArrayList<String>();
 		ArrayList<String> id = new ArrayList<String>();
-		ArrayList<C_news> news1 = new ArrayList<C_news>();
 		int holy = 1;
 		while(true) {
 			String articleURL = "https://news.naver.com/main/list.nhn?mode=LS2D&sid2="+ num2 +"&sid1="+ num1 +"&mid=shm&date="+ wantDate +"&page="+ holy;
@@ -219,11 +248,21 @@ public class DatabaseUtil extends DbUtil{
 				n.setDate(wantDate);
 
 				String json = new Gson().toJson(n);
-				HttpEntity entity = new StringEntity(json, "UTF-8");
-				request.setEntity(entity);
-				HttpResponse response = client.execute(request);
-				String result = EntityUtils.toString(response.getEntity());
-				System.out.println(result);
+				if(choose == "post") {
+					HttpEntity entity = new StringEntity(json, "UTF-8");
+					request.setEntity(entity);
+					HttpResponse response = client.execute(request);
+					String result = EntityUtils.toString(response.getEntity());
+					System.out.println(result);
+				}
+				else if(choose == "rabbit"){
+					try {
+						channel.basicPublish(EXCHANGE_NAME, routingKey, null, json.getBytes("UTF-8"));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 					//			            //  응답
 					//			            String result = EntityUtils.toString(response.getEntity());
 					//			            System.out.println(result);
