@@ -14,22 +14,23 @@ import lombok.Data;
 public class JsoupCrawlerMain {
 	public static void main(String[] args) throws IOException {
 		News[] newslist = new News[10];
-		String url = "https://news.naver.com/";
+		String url = "";
 		Document doc = Jsoup.connect(url).get();
-		Element titles = doc.select("ul.section_list_ranking").get(0);
-		Elements news = titles.select("li");
-		Elements news1 = titles.select("a");
-		int i = 1;
-		for(Element e : news1){
-			News n = new News();
-			n.setTitle(e.text()); 
-			n.setRank(i);
-			String holy = new Gson().toJson(n);
-	        System.out.println(holy);
-
-			i++;
-		    
-		}
+//		Element titles = doc.select("ul.section_list_ranking").get(0);
+//		Elements news = titles.select("li");
+//		Elements news1 = titles.select("a");
+//		int i = 1;
+//		for(Element e : news1){
+//			News n = new News();
+//			n.setTitle(e.text()); 
+//			n.setRank(i);
+//			String holy = new Gson().toJson(n);
+//	        System.out.println(holy);
+//
+//			i++;
+//		    
+//		}
+		System.out.println(doc);
 
 	}
 }

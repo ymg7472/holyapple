@@ -135,9 +135,7 @@ class DateCalculate {
 	//		attach.setFallback("점검이 필요합니다.");
 	//		attach.setText(how + "건이 성공적으로 저장되었습니다.");
 	//		attach.setColor("#323330");
-	//		api.call(new SlackMessage(wantDate+"자 뉴스").addAttachments(attach));
-	//
-	//			
+	//		api.call(new SlackMessage(wantDate+"자 뉴스").addAttachments(attach));		
 
 
 

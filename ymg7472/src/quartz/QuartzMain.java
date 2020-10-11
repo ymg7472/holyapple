@@ -97,7 +97,7 @@ public class QuartzMain {
 //		0 0 0 1,10,20 * ?    매월 1일, 10일, 20일 마다
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH");
 		LocalDateTime now = LocalDateTime.now();
-		if(quartz.initialise("0 0 0/1 * * ?", SchedulerProcessor.class)){
+		if(quartz.initialise("0/1 * * * * ?", SchedulerProcessor.class)){
 			quartz.start();
 		}
 	}

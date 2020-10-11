@@ -24,7 +24,7 @@ import com.rabbitmq.client.Envelope;
  * @version : v1.0
  */
 public class Receiver {
-	private final static String QUEUE_NAME = "minkyu_test";
+	private final static String QUEUE_NAME = "minkyu_test1";
 	public static void main(String[] argv) throws IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost("dev-swh.ga");

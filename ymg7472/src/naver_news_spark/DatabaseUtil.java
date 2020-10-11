@@ -159,8 +159,7 @@ public class DatabaseUtil extends DbUtil{
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 		channel.exchangeDeclare(EXCHANGE_NAME, "topic");
-		String routingKey = "test";
-		int how = 0;
+		String routingKey = "naver_news";
 		HttpClient client = HttpClients.createDefault();
 		HttpPost request = new HttpPost("http://localhost:4567/users");
 		if(wantSub.equals("Á¤Ä¡")) {
@@ -248,6 +247,7 @@ public class DatabaseUtil extends DbUtil{
 				n.setDate(wantDate);
 
 				String json = new Gson().toJson(n);
+				
 				if(choose == "post") {
 					HttpEntity entity = new StringEntity(json, "UTF-8");
 					request.setEntity(entity);

@@ -40,13 +40,13 @@ public class NewsReceiver {
 		factory.setHost("dev-swh.ga");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
-		
+		channel.queueDeclare("minkyu_test", false, false, false, null);
 		channel.exchangeDeclare(EXCHANGE_NAME, "topic");
 		String queueName = channel.queueDeclare().getQueue();
 		
-		channel.queueBind(queueName, EXCHANGE_NAME, "test");
+//		channel.queueBind("minkyu_test", EXCHANGE_NAME, "naver_news");
 		
-		
+		System.out.println(queueName);
 		Consumer consumer = new DefaultConsumer(channel) {
 			@Override
 			public void handleDelivery(String consumerTag, Envelope envelope,

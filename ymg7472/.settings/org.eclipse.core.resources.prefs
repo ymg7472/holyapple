@@ -1,9 +1,14 @@
 eclipse.preferences.version=1
 encoding//resources/freemarker/pie.ftl=UTF-8
+encoding//src/LinkedListNews=UTF-8
 encoding//src/algorithm/MorphemeExample.java=UTF-8
 encoding//src/chartjs/ChartSpark.java=UTF-8
+encoding//src/healthinfo/CSVRead.java=UTF-8
 encoding//src/naver_news_spark/t1.java=UTF-8
 encoding//src/rabbitMq=UTF-8
 encoding//src/rabbitMq/Publisher.java=UTF-8
 encoding//src/rabbitMq/RabbitTest.java=UTF-8
 encoding//src/rabbitMq/Receiver.java=UTF-8
+encoding//src/rabbitMqPost/Publisher.java=UTF-8
+encoding//src/rabbitMqPost/RabbitSpark.java=UTF-8
+encoding//src/rabbitMqPost/Receiver.java=UTF-8

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
 
+import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -25,7 +26,7 @@ import com.rabbitmq.client.ConnectionFactory;
  */
 public class Publisher {
 
-	private final static String QUEUE_NAME = "minkyu_test";
+	private final static String QUEUE_NAME = "hello";
 
 	public static void main(String[] args) throws IOException, TimeoutException {
 		Scanner s = new Scanner(System.in);
@@ -33,11 +34,10 @@ public class Publisher {
 		factory.setHost("dev-swh.ga");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
-		channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-		System.out.println("입력:");
-		String msg = s.nextLine();
-		channel.basicPublish("", QUEUE_NAME, null, msg.getBytes());
-		System.out.println(msg + "을(를) 보냄");
+		channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+//		System.out.println("write");
+//		String msg = s.nextLine();
+		channel.basicPublish("", QUEUE_NAME, null, "hello world".getBytes());
 		
 		channel.close();
 		connection.close();
