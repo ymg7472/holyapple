@@ -19,9 +19,6 @@ import java.util.Scanner;
  */
 public class UdpClient {
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("보낼 메세지 입력 :");
-		String msg = scanner.next();
 		try{
 			// 전송할 수 있는 UDP 소켓 생성
 			DatagramSocket ds = new DatagramSocket();
@@ -30,14 +27,14 @@ public class UdpClient {
 			InetAddress ia = InetAddress.getByName("127.0.0.1");
 
 			// 전송할 데이터 생성
-			DatagramPacket dp = new DatagramPacket(msg.getBytes(),msg.getBytes().length,ia, 7777);
-
-			//데이터 전송
-			ds.send(dp);
+			for(int i = 0; i<10; i++) {
+				String t = String.valueOf(i);
+				DatagramPacket dp = new DatagramPacket(t.getBytes(),t.getBytes().length,ia, 7777);
+				ds.send(dp);
+			}
 			ds.close();
 		}catch(Exception e){
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
-		scanner.close();
 	}
 }

@@ -13,8 +13,8 @@ import lombok.Data;
 @Data
 public class JsoupCrawlerMain {
 	public static void main(String[] args) throws IOException {
-		News[] newslist = new News[10];
-		String url = "";
+//		News[] newslist = new News[10];
+		String url = "https://gall.dcinside.com/mgallery/board/view/?id=krdimigo&no=514";
 		Document doc = Jsoup.connect(url).get();
 //		Element titles = doc.select("ul.section_list_ranking").get(0);
 //		Elements news = titles.select("li");
@@ -30,7 +30,7 @@ public class JsoupCrawlerMain {
 //			i++;
 //		    
 //		}
-		System.out.println(doc);
+		System.out.println(doc.toString());
 
 	}
 }

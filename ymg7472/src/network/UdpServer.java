@@ -28,11 +28,7 @@ public class UdpServer {
 			while(true){
 				// 데이터 전송 받기
 				ds.receive(dp);
-				// 데이터 보낸곳 확인
-				System.out.println(" 송신 IP : " + dp.getAddress());
-				// 보낸 데이터를 UTF-8에 문자열로 변환
-				String msg = new String(dp.getData(),"UTF-8");
-				System.out.println("보내 온 내용  : " + msg);
+				System.out.println(new String(dp.getData(),"UTF-8"));
 			}
 		} catch(Exception e){
 			System.out.println(e.getMessage());
