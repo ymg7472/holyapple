@@ -21,12 +21,14 @@ import java.util.Set;
  */
 public class ChattingServer extends Thread{
     Set<ServerThread> sockets = new HashSet<>();
-    
+    int port;
+    public ChattingServer(int port) {
+    	this.port = port;
+    }
     public void run(){
         ServerSocket serverSocket = null;
         try{
-            serverSocket = new ServerSocket(1234);
-            System.out.println("클라이언트 연결을 기다립니다.");
+            serverSocket = new ServerSocket(port);
             while(true){
                 Socket s = serverSocket.accept();
                 ServerThread t = new ServerThread(this, s);
@@ -50,7 +52,9 @@ public class ChattingServer extends Thread{
     }
     
     public static void main(String[] args) {
-    	ChattingServer server = new ChattingServer();
-    	server.start();
+    	ChattingServer server1 = new ChattingServer(1234);
+    	server1.start();
+    	ChattingServer server2 = new ChattingServer(5678);
+    	server2.start();
     }
 }

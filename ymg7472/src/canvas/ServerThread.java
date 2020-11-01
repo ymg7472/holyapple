@@ -37,7 +37,6 @@ public class ServerThread extends Thread{
     private Socket socket;
     private ChattingServer server;
     private OutputStream os;
-    
     public ServerThread(ChattingServer server, Socket s){
         this.server = server;
         this.socket = s;
@@ -54,9 +53,6 @@ public class ServerThread extends Thread{
             String line;
             while(true){
                 line = dis.readUTF();
-                
-//                System.out.println(line);
-                //	서버로 들어온 메세지는 접속된 모든 클라이언트에게 전송
                 server.broadcast(line);
             }
         }catch(IOException e){

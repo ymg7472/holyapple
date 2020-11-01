@@ -29,10 +29,27 @@ import javax.swing.JPanel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class Circle extends JPanel{
+public class Paintbrush extends JPanel{
+	
 	private List<List<Point>> point = new ArrayList<List<Point>>();
+	private Color color = Color.RED;
 	DataOutputStream dos = null;
-	public Circle(Socket socket) {
+	String[] colorItems = {"r", "g", "b"};
+    public Color getColor() {
+        return color;
+    }
+    public void setColor(int color) {
+        if(color == 0) {
+        	this.color = Color.RED;
+        }
+        else if(color == 1) {
+        	this.color = Color.GREEN;
+        }
+        else {
+        	this.color = Color.BLUE;
+        }
+    }
+	public Paintbrush(Socket socket) {
 		try {
 			dos = new DataOutputStream(socket.getOutputStream());
 		} catch (IOException e1) {
@@ -53,7 +70,6 @@ public class Circle extends JPanel{
 				String t = g.toJson(point);
 				try {
 					dos.writeUTF(t);
-
 				}catch(IOException e) {
 					e.printStackTrace();
 				}finally {
@@ -68,12 +84,11 @@ public class Circle extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(new Color(255, 0, 125));
+		g2.setColor(getColor());
 		g2.setStroke(new BasicStroke(15f,
 				BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_ROUND));
-		for (int i = 0; i < point.size(); i++) {
-			List<Point> l = point.get(i);
+		for(List<Point> l : point) {
 			for (int j = 1; j < l.size(); j++) {
 				g2.draw(new Line2D.Float(l.get(j-1), l.get(j)));
 			}
@@ -84,7 +99,7 @@ public class Circle extends JPanel{
 
 		public ChattingClientInputThread(Socket socket) {
 			this.socket = socket;
-		}
+		}	
 		
 		public void run() {
 			Gson gson = new Gson();
@@ -123,15 +138,15 @@ public class Circle extends JPanel{
 		}
 
 		
-		Circle circle = new Circle(socket);
+		Paintbrush paintbrush = new Paintbrush(socket);
 		try {
-			circle.connect(socket);
+			paintbrush.connect(socket);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		JFrame f = new JFrame();
-		f.add(circle);
+		f.add(paintbrush);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(800, 600);
 		f.setVisible(true);
