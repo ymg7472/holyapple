@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * <pre>
@@ -42,7 +43,7 @@ public class ServerThread extends Thread{
         this.socket = s;
         System.out.println("클라이언트 연결 : " + s.getInetAddress().getHostAddress());
     }
-    
+    ArrayList<String> us = new ArrayList<String>();
     public void run(){
         InputStream is = null;
         DataInputStream dis = null;
@@ -53,7 +54,13 @@ public class ServerThread extends Thread{
             String line;
             while(true){
                 line = dis.readUTF();
-                server.broadcast(line);
+                if(!line.contains(":")) {
+                	us.add(line);
+                	server.announce(us);
+                }
+                else {
+                	server.broadcast(line);
+                }
             }
         }catch(IOException e){
             e.printStackTrace();

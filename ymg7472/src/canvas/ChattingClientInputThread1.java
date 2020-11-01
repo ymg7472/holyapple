@@ -25,13 +25,20 @@ import com.google.gson.Gson;
 public class ChattingClientInputThread1  extends Thread{
 	private Socket socket;
 	private MyPanel myPanel;
-	
 	public ChattingClientInputThread1(Socket socket, MyPanel myPanel) {
 		this.socket = socket;
 		this.myPanel = myPanel;
 	}	
 	ArrayList<String> us = new ArrayList<String>();
-	
+	public static boolean isJson(String str) {
+		Gson gson = new Gson();
+		try {
+			gson.fromJson(str, Object.class);
+			return true;
+		} catch(com.google.gson.JsonSyntaxException ex) { 
+			return false;
+		}
+	}
 	public void run() {
 		Gson gson = new Gson();
 		DataInputStream dis = null;
@@ -39,12 +46,14 @@ public class ChattingClientInputThread1  extends Thread{
 			dis = new DataInputStream(socket.getInputStream());
 			String line;
 			while((line = dis.readUTF())!=null){
-				if(line.contains(":")) {
-					myPanel.getChat_area().append(line + "\n" );
+				if(ChattingClientInputThread1.isJson(line)) {
+					myPanel.getChat_area().append(line+ "has connected. \n");	
+					us.add(line);
+					myPanel.login(us);
 				}
+
 				else {
-					myPanel.getChat_area().append(line+ "has connected.");	
-					myPanel.setUserList(us);
+					myPanel.getChat_area().append(line + "\n" );
 				}
 			}
 

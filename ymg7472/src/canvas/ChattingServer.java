@@ -3,9 +3,12 @@ package canvas;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import com.google.gson.Gson;
 
 /**
  * <pre>
@@ -50,7 +53,15 @@ public class ChattingServer extends Thread{
             peer.sendMessage(message);
         }
     }
-    
+    public void announce(ArrayList<String> us){
+        Iterator<ServerThread> it = sockets.iterator();
+        Gson gson= new Gson();
+        while(it.hasNext()){
+            ServerThread peer = it.next();
+            
+            peer.sendMessage(gson.toJson(us));
+        }
+    }
     public static void main(String[] args) {
     	ChattingServer server1 = new ChattingServer(1234);
     	server1.start();

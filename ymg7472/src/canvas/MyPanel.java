@@ -39,8 +39,9 @@ public class MyPanel extends JPanel {
     private JComboBox color;
     private JTextField tf;
     
-    public void setUserList(ArrayList<String> asd) {
-    	this.userList = asd;
+
+    public void login(ArrayList<String> unameList) {
+    	this.setUserList(unameList);
     	for(String name : userList) {
     		list.append(name + "\n");
     	}
