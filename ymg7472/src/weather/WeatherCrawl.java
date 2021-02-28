@@ -21,7 +21,9 @@ public class WeatherCrawl {
 			s.println("==============");
 			Elements e1 = doc.select("data");
 			for (Element elem : e1 ) {
-				Elements sn1 = elem.select("tmef");
+				Elements sn1 = elem.select("mode");
+				if (sn1.text().equals("A01")) continue;
+				sn1 = elem.select("tmef");
 				s.print("³¯Â¥: "+sn1.text()+", ");
 				sn1 = elem.select("wf");
 				s.print("³¯¾¾: "+sn1.text()+", ");

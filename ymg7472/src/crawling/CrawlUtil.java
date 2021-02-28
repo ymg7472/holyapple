@@ -28,7 +28,7 @@ public class CrawlUtil {
 		doc = cr.crawl(url);
 		Elements ele = doc.select("div.menuName span");
 		String final1 = ele.text().replace(" ", "\n > ");
-		if(ele.eachText().toString().equals("[]")) final1 = "없노";
+		if(ele.eachText().toString().equals("[]")) final1 = "없음";
 		return final1;
 		
 	}
@@ -44,7 +44,6 @@ public class CrawlUtil {
 		String fin = "**" + k1 + "\n" + k2 + "**";
 		return fin;
 	}
-	
 	public Document crawl(String url) {
 		try {
 			doc = Jsoup.connect(url).timeout(0).get();

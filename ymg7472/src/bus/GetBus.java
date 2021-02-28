@@ -134,11 +134,5 @@ public class GetBus {
 		return stList;
 	}
 
-	public static void main(String[] args) {
-
-		
-
-
-	}
 
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2019. 8. 18 ???? 3:10:29 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping default-access="field">
+	<class name="naver_news_spark.models.Weather" table="Weather">
+		<property generated="never" lazy="false" name="city"
+			type="java.lang.String">
+			<column name="city" />
+		</property>
+		<property generated="never" lazy="false" name="tmef"
+			type="java.lang.String">
+			<column name="tmef" />
+		</property>
+		<property generated="never" lazy="false" name="wf"
+			type="java.lang.String">
+			<column name="wf" />
+		</property>
+		<property generated="never" lazy="false" name="tmn"
+			type="java.lang.String">
+			<column name="tmn" />
+		</property>
+		<property generated="never" lazy="false" name="tmx"
+			type="java.lang.String">
+			<column name="tmx" />
+		</property>
+	</class>
+</hibernate-mapping>

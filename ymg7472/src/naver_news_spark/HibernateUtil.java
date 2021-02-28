@@ -7,6 +7,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import naver_news_spark.models.C_news;
+import naver_news_spark.models.Weather;
 
 /**
  * <pre>

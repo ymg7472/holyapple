@@ -31,22 +31,20 @@ import naver_news_spark.models.C_news;
 public class NewsReceiver {
 
 	private static final String EXCHANGE_NAME = "ymg7472";
-	
+	private static final String QUEUE_NAME = "ymg7472";
 	// argv -> "kern.*" // "*.critical" // "kern.*" "*.critical" // "kern.critical" "A critical kernel error"
 	
 	public static void main(String[] argv) throws Exception {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("dev-swh.ga");
+		factory.setHost("dev-swh.gq");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
-		channel.queueDeclare("minkyu_test", false, false, false, null);
+		channel.queueDeclare(QUEUE_NAME, true, false, false, null);
 		channel.exchangeDeclare(EXCHANGE_NAME, "topic");
 		String queueName = channel.queueDeclare().getQueue();
-		
-//		channel.queueBind("minkyu_test", EXCHANGE_NAME, "naver_news");
-		
-		System.out.println(queueName);
+		channel.queueBind(QUEUE_NAME, "ymg7472", "news");
+
 		Consumer consumer = new DefaultConsumer(channel) {
 			@Override
 			public void handleDelivery(String consumerTag, Envelope envelope,
@@ -62,10 +60,11 @@ public class NewsReceiver {
 				} catch (Exception e1) {
 					System.out.println(e1.getMessage());
 				} 
+				System.out.println(message);
 			}
 		};
  
-		channel.basicConsume(queueName, true, consumer);
+		channel.basicConsume(QUEUE_NAME, true, consumer);
 	
 	}
 

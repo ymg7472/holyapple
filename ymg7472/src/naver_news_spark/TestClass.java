@@ -1,6 +1,7 @@
 package naver_news_spark; 
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
@@ -19,16 +20,21 @@ import org.apache.log4j.Logger;
  */
 public class TestClass {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
-		DatabaseUtil db = new DatabaseUtil("jdbc:mysql://dev-swh.ga/minkyu", "root", "swhacademy!");
+		NaverNewsCrawl db = new NaverNewsCrawl("it", "20210207", "post");
 		try {
-			db.crawlNews("Á¤Ä¡", "20200704", "rabbit");
+			db.crawlNews();
 		} catch (IOException | TimeoutException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		db.close();
+//		int i = db.getTotalPage("105", "230");
+//		int j = db.getPageCount();
+//		System.out.println(i + " and " + j);
+//		System.out.println(db.getDiff("105", "230")+"¹ø");
+		
+
 	}
 
 }

@@ -1,31 +1,15 @@
 package canvas; 
 
-import java.awt.List;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-
-import org.apache.log4j.Logger;
-
 import com.google.gson.Gson;
 
-/**
- * <pre>
- * canvas 
- * ChattingClientInputThread1.java
- *
- * Ό³Έν :
- * </pre>
- * 
- * @since : 2020. 11. 1.
- * @author : ymg74
- * @version : v1.0
- */
-public class ChattingClientInputThread1  extends Thread{
+public class ChattingRecvThread  extends Thread{
 	private Socket socket;
 	private MyPanel myPanel;
-	public ChattingClientInputThread1(Socket socket, MyPanel myPanel) {
+	public ChattingRecvThread(Socket socket, MyPanel myPanel) {
 		this.socket = socket;
 		this.myPanel = myPanel;
 	}	
@@ -46,14 +30,18 @@ public class ChattingClientInputThread1  extends Thread{
 			dis = new DataInputStream(socket.getInputStream());
 			String line;
 			while((line = dis.readUTF())!=null){
-				if(ChattingClientInputThread1.isJson(line)) {
-					myPanel.getChat_area().append(line+ "has connected. \n");	
-					us.add(line);
+				Content content = gson.fromJson(line, Content.class);
+				if(content.getType().equals("connected")) {
+					String[] us = gson.fromJson(content.getContent(), String[].class);
+					myPanel.getChat_area().append(us[us.length-1]+ " has connected. \n");	
 					myPanel.login(us);
 				}
-
+				else if(content.getType().equals("quiz")) {
+					myPanel.getWord().setText(content.getContent());
+				}
 				else {
-					myPanel.getChat_area().append(line + "\n" );
+					myPanel.getChat_area().append(content.getContent() + "\n" );
+					myPanel.getChat_area().setCaretPosition(myPanel.getChat_area().getDocument().getLength());
 				}
 			}
 

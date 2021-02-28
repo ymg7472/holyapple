@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -17,8 +16,11 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import com.google.gson.Gson;
 
 import lombok.Data;
 
@@ -33,51 +35,60 @@ public class MyPanel extends JPanel {
     private JTextField jcomp5;
     private JTextArea jcomp6;
     private JTextArea chat_area;
+    private JScrollPane scroll;
     private JTextArea list;
     private JTextArea word;
+    private JButton quizButton;
     private Paintbrush canvas;
-    private JComboBox color;
+    private JComboBox color;	
     private JTextField tf;
     
-
-    public void login(ArrayList<String> unameList) {
-    	this.setUserList(unameList);
-    	for(String name : userList) {
+    private String uname;
+    private Socket chatSocket;
+    private Socket drawSocket;
+    private DataOutputStream chatOutputStream = null;
+    private Gson gson = new Gson();
+    ChattingRecvThread chatRecvThread = null;
+    
+    
+    class ChatSender implements ActionListener{
+    	JTextField tf;
+    	DataOutputStream dos;
+    	String uname;
+    	public ChatSender(JTextField tf, DataOutputStream dos,String uname){
+    		this.tf = tf;
+    		this.dos = dos;
+    		this.uname = uname;
+    	}
+    	@Override
+    	public void actionPerformed(ActionEvent e) {
+    		String str  = tf.getText();
+    		Content con = new Content("msg", uname+" : "+str);
+    		str = gson.toJson(con);
+    		try {
+				dos.writeUTF(str);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+  
+    		tf.setText("");
+    	}
+    }
+    
+    public void login(String[] unameList) {
+    	list.setText("");
+    	for(String name : unameList) {
+    		System.out.println(name);
     		list.append(name + "\n");
     	}
     }
-    DataOutputStream dos = null;
-
-    public MyPanel(String uname, Socket soc2) throws Exception {
-    	Socket soc1 = new Socket("127.0.0.1", 1234);
-        try {
-			dos = new DataOutputStream(soc2.getOutputStream());
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    	class ChatListener implements ActionListener{
-        	JTextField tf;
-        	DataOutputStream dos;
-        	String uname;
-        	public ChatListener(JTextField tf, DataOutputStream dos,String uname){
-        		this.tf = tf;
-        		this.dos = dos;
-        		this.uname = uname;
-        	}
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		String str  = tf.getText();
-        		try {
-					dos.writeUTF(uname+" : "+str);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-        		tf.setText("");
-        	}
-        }
-
+    public MyPanel(String uname) throws Exception {
+    	this.uname = uname;
+    	this.chatSocket = new Socket("127.0.0.1", 5678);// 채팅 포트
+    	this.drawSocket = new Socket("127.0.0.1", 1234);//캔버스 포트
+    	
+       
         String[] colorItems = {"r", "g", "b"};
 
 
@@ -89,19 +100,17 @@ public class MyPanel extends JPanel {
         ok = new JButton ("ok");
         chat_area = new JTextArea (5, 5);
         chat_area.setEditable(false);
-        chat_area.setAutoscrolls(true);
         list = new JTextArea (5, 5);
+        list.setEditable(false);
         word = new JTextArea (5, 5);
+        word.setEditable(false);
+        quizButton = new JButton ("퀴즈!");
         tf = new JTextField (5);
    
         
-        ChatListener l1 = new ChatListener(tf,dos,uname);
-        ok.addActionListener(l1);
-		tf.addActionListener(l1);
-
-		canvas = new Paintbrush(soc1);
+		canvas = new Paintbrush(drawSocket);
 		try {
-			canvas.connect(soc1);
+			canvas.connect(drawSocket);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -128,11 +137,12 @@ public class MyPanel extends JPanel {
         add (chat_area);
         add (list);
         add (word);
+        add(quizButton);
         add (canvas);
         add (color);
         add (tf);
 
-        //set component bounds (only needed by Absolute Positioning)
+
         jcomp1.setBounds (-370, 100, 100, 20);
         jcomp2.setBounds (-390, 140, 100, 20);
         jcomp3.setBounds (-385, 135, 140, 20);
@@ -142,25 +152,47 @@ public class MyPanel extends JPanel {
         chat_area.setBounds (190, 505, 735, 150);
         list.setBounds (5, 505, 185, 200);
         word.setBounds (340, 5, 245, 55);
+        quizButton.setBounds(600, 5, 90, 50);
         canvas.setBounds (5, 55, 930, 420);
         canvas.setBackground(Color.WHITE);
         color.setBounds (5, 480, 130, 25);
         tf.setBounds (190, 655, 670, 50);
     }
     
-    ChattingClientInputThread1 input = null;
-	public void connect(Socket socket, String uname) throws UnknownHostException, IOException {
-		//	입 출력 관련 스레드를 생성
-		input = new ChattingClientInputThread1(socket, this);
-		//	스레드 동작
-		input.start();
+    
+	public void connect(String uname) throws UnknownHostException, IOException {
+		chatRecvThread = new ChattingRecvThread(this.chatSocket, this);
+		chatRecvThread.start();
 		try {
-			dos = new DataOutputStream(socket.getOutputStream());
+			chatOutputStream = new DataOutputStream(chatSocket.getOutputStream());
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		dos.writeUTF(uname);
+        ChatSender l1 = new ChatSender(tf,chatOutputStream,uname);
+        ok.addActionListener(l1);
+		tf.addActionListener(l1);
+		
+		quizButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Content cont = new Content("quiz", "please!");
+				Paintbrush.point.clear();
+				try {
+					chatOutputStream.writeUTF(gson.toJson(cont));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
+	
+		Content content = new Content("connected", uname);
+		String json = gson.toJson(content);
+		chatOutputStream.writeUTF(json);
 	}
 
     public static void main (String[] args) throws Exception {
@@ -172,10 +204,10 @@ public class MyPanel extends JPanel {
 		}
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        Socket soc2 = new Socket("127.0.0.1", 5678);
+        
         MyPanel mp = null;
-		mp = new MyPanel(uname, soc2);
-        mp.connect(soc2, uname);
+		mp = new MyPanel(uname);
+        mp.connect(uname);
 		frame.getContentPane().add(mp);
         frame.pack();
         frame.setVisible (true);

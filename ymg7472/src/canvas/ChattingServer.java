@@ -10,23 +10,15 @@ import java.util.Set;
 
 import com.google.gson.Gson;
 
-/**
- * <pre>
- * kr.co.swh.lecture.network.chat 
- * ChattingServer.java
- *
- * 설명 :채팅 서버 프로그램, 소켓을 관리
- * </pre>
- * 
- * @since : 2018. 12. 28.
- * @author : tobby48
- * @version : v1.0
- */
 public class ChattingServer extends Thread{
     Set<ServerThread> sockets = new HashSet<>();
+    static ArrayList<String> userList = new ArrayList<String>();
     int port;
-    public ChattingServer(int port) {
+    Gson gson = new Gson();
+    MessageType type;
+    public ChattingServer(int port, MessageType type) {
     	this.port = port;
+    	this.type = type;
     }
     public void run(){
         ServerSocket serverSocket = null;
@@ -34,12 +26,11 @@ public class ChattingServer extends Thread{
             serverSocket = new ServerSocket(port);
             while(true){
                 Socket s = serverSocket.accept();
-                ServerThread t = new ServerThread(this, s);
+                ServerThread t = new ServerThread(this, s, type);
                 t.start();
                 sockets.add(t);
             }
         }catch(IOException e){
-            System.err.println("서버 에러");
             e.printStackTrace();
         }finally{
             try{ serverSocket.close(); } catch(Exception e) {}
@@ -53,19 +44,27 @@ public class ChattingServer extends Thread{
             peer.sendMessage(message);
         }
     }
-    public void announce(ArrayList<String> us){
-        Iterator<ServerThread> it = sockets.iterator();
-        Gson gson= new Gson();
+    public void announce(String drawer, String not_drawer){
+    	Iterator<ServerThread> it = sockets.iterator();
+    	ServerThread peer1 = it.next();
+        peer1.sendMessage(drawer);
         while(it.hasNext()){
+            ServerThread peer2 = it.next();
+            peer2.sendMessage(not_drawer);
+        }
+    }
+    public void answer() {
+    	Iterator<ServerThread> it = sockets.iterator();
+    	Content cont = new Content("ans", "---------Right Answer------------");
+    	while(it.hasNext()){
             ServerThread peer = it.next();
-            
-            peer.sendMessage(gson.toJson(us));
+            peer.sendMessage(gson.toJson(cont));
         }
     }
     public static void main(String[] args) {
-    	ChattingServer server1 = new ChattingServer(1234);
+    	ChattingServer server1 = new ChattingServer(1234, MessageType.DRAW);
     	server1.start();
-    	ChattingServer server2 = new ChattingServer(5678);
+    	ChattingServer server2 = new ChattingServer(5678,  MessageType.CHAT);
     	server2.start();
     }
 }

@@ -1,7 +1,10 @@
 package algorithm; 
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import com.google.gson.Gson;
 
 
 /**
@@ -19,14 +22,10 @@ import java.util.Date;
 public class ForTest {
 
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Date d = new Date();
-		System.out.println(d.toLocaleString());
-		
-
-
-
+	public static void main(String[] args) throws Exception {
+		int c = 0, n = new Scanner(System.in).nextInt();
+		for (int i=1; i<=n; c+=i++) System.out.printf("%d%c", i, i<n?'+':'=');
+		System.out.print(c);
 	}
 
 }

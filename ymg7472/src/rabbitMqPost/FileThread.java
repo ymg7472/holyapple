@@ -52,7 +52,13 @@ public class FileThread extends Thread {
             //create string from byte array
             String s = new String(fileContent);
             System.out.println("File content: " + s);
-        }
+        } catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         finally {
             // close the streams using close method
             try {

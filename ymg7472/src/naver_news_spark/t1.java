@@ -5,22 +5,27 @@ import static spark.Spark.modelAndView;
 import static spark.Spark.post;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.json.JSONArray;
 
 import com.google.gson.Gson;
 
 import naver_news_spark.models.C_news;
+import naver_news_spark.models.Weather;
 import naver_news_spark.models.WordCloud;
 
 public class t1 {
-
+	static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	
+	static GetFromDb db = new GetFromDb("jdbc:mysql://dev-swh.gq/minkyu", "root", "swhacademy!");
 	public static void main(String[] args) {
-		DatabaseUtil db = new DatabaseUtil("jdbc:mysql://dev-swh.ga/minkyu", "root", "swhacademy!");
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		
 		get("/", (request, response) -> {
 			return modelAndView(null, "test.ftl");
 		}, new FreeMarkerTemplateEngine());
@@ -63,21 +68,39 @@ public class t1 {
 	
 		post("/users", (request, response) -> {
 			response.type("application/json");
+			Session session = sessionFactory.openSession();
 			C_news jnews = new Gson().fromJson(request.body(), C_news.class);
-			try {
-				Session session = sessionFactory.openSession();
-				session.beginTransaction();
-				session.save(jnews);
-				session.getTransaction().commit();
-				session.close();
-			} catch (Exception e1) {
-				System.out.println(e1.getMessage());
-			} 
+//			List dupList = session.createCriteria(C_news.class).add(Restrictions.eq("id", jnews.getId())).list();
+					try {
+						session.beginTransaction();
+						session.saveOrUpdate(jnews);						
+						session.getTransaction().commit();
+						session.close();
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					} 
 			
-			return "success ";
+			return "";
 
 
 		});
+//		post("/weather", (request, response) -> {
+//			response.type("application/json");
+//			Weather weather = new Gson().fromJson(request.body(), Weather.class);
+//			try {
+//				session.beginTransaction();
+//				session.saveOrUpdate(weather);
+//				session.getTransaction().commit();
+////				session.close();
+//			} catch (Exception e1) {
+//				System.out.println(e1.getMessage());
+//			} 
+//			
+//			return "success ";
+//
+//
+//		});
+//		
 
 	}
 

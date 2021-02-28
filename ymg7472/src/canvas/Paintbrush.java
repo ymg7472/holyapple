@@ -13,17 +13,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.google.gson.Gson;
@@ -31,8 +24,9 @@ import com.google.gson.reflect.TypeToken;
 
 public class Paintbrush extends JPanel{
 	
-	private List<List<Point>> point = new ArrayList<List<Point>>();
+	static List<List<Point>> point = new ArrayList<List<Point>>();
 	private Color color = Color.RED;
+	Gson g = new Gson();
 	DataOutputStream dos = null;
 	String[] colorItems = {"r", "g", "b"};
     public Color getColor() {
@@ -50,6 +44,7 @@ public class Paintbrush extends JPanel{
         }
     }
 	public Paintbrush(Socket socket) {
+		super();
 		try {
 			dos = new DataOutputStream(socket.getOutputStream());
 		} catch (IOException e1) {
@@ -62,14 +57,14 @@ public class Paintbrush extends JPanel{
 				point.add(list);
 			}
 		});
-		
 		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent event) {
 				point.get(point.size()-1).add(event.getPoint());
-				Gson g = new Gson();
+				
 				String t = g.toJson(point);
+				Content con = new Content("draw", t);
 				try {
-					dos.writeUTF(t);
+					dos.writeUTF(g.toJson(con));
 				}catch(IOException e) {
 					e.printStackTrace();
 				}finally {
@@ -123,33 +118,9 @@ public class Paintbrush extends JPanel{
 
 	ChattingClientInputThread input = null;
 	public void connect(Socket socket) throws UnknownHostException, IOException {
-		//	입 출력 관련 스레드를 생성
 		input = new ChattingClientInputThread(socket);
-		//	스레드 동작
 		input.start();
 	}
 	public static void main(String[] args) {
-		Socket socket = null;
-		try {
-			socket = new Socket("127.0.0.1", 1234);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		
-		Paintbrush paintbrush = new Paintbrush(socket);
-		try {
-			paintbrush.connect(socket);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		JFrame f = new JFrame();
-		f.add(paintbrush);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(800, 600);
-		f.setVisible(true);
-	
 	}
 }
