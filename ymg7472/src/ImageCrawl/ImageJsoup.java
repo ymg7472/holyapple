@@ -21,7 +21,7 @@ import org.jsoup.select.Elements;
  * <pre>
  * ImageCrawl 
  * ImageJsoup.java
- *
+ *7472
  * Ό³Έν :
  * </pre>
  * 
